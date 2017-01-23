@@ -2,7 +2,7 @@
   "name": "week-11-flashcard",
   "version": "1.0.0",
   "description": "",
-  "main": "cardinfo.js",
+  "main": "flash.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
