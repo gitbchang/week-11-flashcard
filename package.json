@@ -1,0 +1,22 @@
+{
+  "name": "week-11-flashcard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "cardinfo.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gitbchang/week-11-flashcard.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gitbchang/week-11-flashcard/issues"
+  },
+  "homepage": "https://github.com/gitbchang/week-11-flashcard#readme",
+  "dependencies": {
+    "inquirer": "^3.0.0"
+  }
+}
