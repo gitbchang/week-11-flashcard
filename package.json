@@ -18,5 +18,6 @@
   "homepage": "https://github.com/gitbchang/week-11-flashcard#readme",
   "dependencies": {
     "inquirer": "^3.0.0"
-  }
+  },
+  "devDependencies": {}
 }

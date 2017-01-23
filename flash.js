@@ -4,7 +4,7 @@ var inquirer = require('inquirer');
 var counter = 0;
 
 // console.log(importedQuestions.questions[0]);
-
+askQuestion();
 
 function askQuestion() {
     if (importedQuestions.questions[counter] !== undefined) {
@@ -20,10 +20,12 @@ function askQuestion() {
             if (user.userAnswer === importedQuestions.questions[counter].back) {
                 console.log("That is the correct answer!");
                 counter++;
+                askQuestion();
 
             } else {
                 console.log("WRONG!");
                 counter++;
+                askQuestion();
             }
         });
     }
