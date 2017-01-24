@@ -13,6 +13,8 @@ var jsonCloze;
 // getClozeAnswer();
 // askClozeQuestion();
 askCardType();
+// askClozeQuestion2();
+
 
 
 function askCardType(){
@@ -26,10 +28,11 @@ function askCardType(){
         }
     ]).then(function(user){
         if(user.cardType === "basic"){
-            askQuestion();
+            askBasicQuestion2();
         }
         else if(user.cardType === "cloze"){
-            askClozeQuestion();
+            // askClozeQuestion();
+            askClozeQuestion2();
         }
         else {
             askCardType();
@@ -37,9 +40,101 @@ function askCardType(){
     });
 }
 
+function basicCard(front, back){
+    this.front = front;
+    this.back = back;
+}
+
+function CreateClozeCard(string){
+    this.string = string;
+}
 
 
+function askBasicQuestion2(){
+    var newCard = new basicCard(importedQuestions.questions[counter].front,
+       importedQuestions.questions[counter].back);
 
+    inquirer.prompt([
+        {
+            type:"input",
+            message: newCard.front,
+            name: "userAnswer"
+        }
+    ]).then(function(user){
+        var correctAnswer = newCard.back.toUpperCase();
+        if(user.userAnswer === correctAnswer){
+            console.log("That is the correct answer!");
+            counter++;
+            startOverBasic();
+            askBasicQuestion2();
+
+        }
+        else {
+            console.log("WRONG! The answer was: " + newCard.back);
+            counter++;
+            startOverBasic();
+            askBasicQuestion2();
+        }
+    });
+}
+
+function askClozeQuestion2(){
+    var newClozeCard = new CreateClozeCard(importedClozeQuestions.clozeQuestions[counter].cloze);
+    // console.log(newClozeCard.string);
+    var clozeString = newClozeCard.string;
+    getClozeAnswer2();
+    // console.log(joinedAnswer);
+    var hiddenAnswer = "....";
+    var curlyAnswer = "{{"+joinedAnswer+"}}";
+    var replacedQuestion = clozeString.replace(curlyAnswer, hiddenAnswer);
+
+    inquirer.prompt([
+
+        {
+            type: "confirm",
+            message: replacedQuestion + "  Show Answer?",
+            name: "userAnswer"
+        }
+
+    ]).then(function(user){
+        if(user.userAnswer === true){
+            console.log(joinedAnswer);
+            counter++;
+            startOverCloze();
+            askClozeQuestion2();
+        }
+        else {
+            counter++;
+            startOverCloze();
+            askClozeQuestion2();
+        }
+    });
+}
+
+function getClozeAnswer2(){
+    var newClozeCard = new CreateClozeCard(importedClozeQuestions.clozeQuestions[counter].cloze);
+    // console.log(newClozeCard.string);
+    var clozeString = newClozeCard.string;
+    var getAnswerArray = [];
+    for(var i = 0; i < clozeString.length;i++){
+        // console.log(clozeString.charAt(i));
+        if(clozeString.charAt(i) === "{"){
+            if(clozeString.charAt(i+1) === "{"){
+                var starting = i+2;
+                while(clozeString.charAt(starting) !== "}"){
+                    if(clozeString.charAt(starting) === "}"){
+                        if(clozeString.charAt(starting+1) === "}"){
+                            break;
+                        }
+                    }
+                    getAnswerArray.push(clozeString.charAt(starting));
+                    starting++;
+                }
+            }
+        }
+    }
+    joinedAnswer = getAnswerArray.join("");
+}
 
 
 
@@ -116,7 +211,7 @@ function getClozeAnswer(){
     // console.log(joinedAnswer);
 }
 
-
+/*
 function askQuestion() {
     if (importedQuestions.questions[counter] !== undefined) {
         inquirer.prompt([
@@ -165,6 +260,7 @@ function askQuestion() {
 
 
 }
+*/
 
 function startOverCloze(){
     if(counter === importedClozeQuestions.clozeQuestions.length){
@@ -188,4 +284,27 @@ function startOverCloze(){
         });
     }
 
+}
+
+function startOverBasic(){
+    if(counter === importedQuestions.questions.length){
+        inquirer.prompt([
+
+            {
+                type: "confirm",
+                message: "Would you like to play again?",
+                name: "playAgain"
+            }
+
+        ]).then(function(user){
+            if(user.playAgain === true){
+                counter = 0;
+                askBasicQuestion2();
+            }
+            else {
+                askCardType();
+            }
+
+        });
+    }
 }
