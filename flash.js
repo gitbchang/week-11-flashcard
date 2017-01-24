@@ -1,15 +1,60 @@
 var importedQuestions = require("./cardinfo.js");
 var importedClozeQuestions = require("./clozecardinfo.js");
+var fs = require('fs');
 var inquirer = require('inquirer');
 // keep track of which question we are on
 var counter = 0;
 var joinedAnswer;
+var jsonCloze;
 
 // console.log(importedQuestions.questions.length);
 // console.log(importedClozeQuestions.clozeQuestions[0]);
 // askQuestion();
 // getClozeAnswer();
-askClozeQuestion();
+// askClozeQuestion();
+askCardType();
+
+
+function askCardType(){
+    counter = 0;
+    inquirer.prompt([
+        {
+            type: "list",
+            message: "Would you like to see a basic or cloze card?",
+            choices: ["basic", "cloze"],
+            name: "cardType"
+        }
+    ]).then(function(user){
+        if(user.cardType === "basic"){
+            askQuestion();
+        }
+        else if(user.cardType === "cloze"){
+            askClozeQuestion();
+        }
+        else {
+            askCardType();
+        }
+    });
+}
+
+
+
+
+
+
+
+
+
+//   BONUS
+/*
+fs.readFile("./clozecardinfojson.json", "utf8", function(err, data){
+    if(err){
+        console.log(err);
+    }
+    jsonCloze = JSON.parse(data);
+    console.log(jsonCloze);
+});
+*/
 
 function askClozeQuestion(){
     getClozeAnswer();
@@ -91,7 +136,7 @@ function askQuestion() {
                 askQuestion();
 
             } else {
-                console.log("WRONG!");
+                console.log("WRONG! The answer was: " + importedQuestions.questions[counter].back);
                 counter++;
                 askQuestion();
             }
@@ -112,7 +157,7 @@ function askQuestion() {
                 askQuestion();
             }
             else {
-                console.log("bye");
+                askCardType();
             }
 
         });
@@ -137,7 +182,7 @@ function startOverCloze(){
                 askClozeQuestion();
             }
             else {
-                console.log("bye");
+                askCardType();
             }
 
         });
