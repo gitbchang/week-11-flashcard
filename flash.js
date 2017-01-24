@@ -43,7 +43,7 @@ function basicCard(front, back){
     this.front = front;
     this.back = back;
 }
-
+// CLOZE CONSTRUCTOR
 function CreateClozeCard(string){
     this.string = string;
     this.showClozeDeleted = function(){
@@ -72,11 +72,19 @@ function CreateClozeCard(string){
     this.showPartialText = function(){
         var hiddenAnswer = "....";
         var curlyAnswer = "{{"+joinedAnswer+"}}";
+        var clozeString = this.string;
         getClozeAnswer2();
         var replacedQuestion = clozeString.replace(curlyAnswer, hiddenAnswer);
         console.log(replacedQuestion);
-
     };
+    this.returnFull = function(){
+        var clozeString = this.string;
+        getClozeAnswer2();
+        var replaceAnswer = "{{"+joinedAnswer+"}}";
+        clozeString.replace(replaceAnswer, joinedAnswer);
+        console.log(clozeString);
+    };
+
 }
 
 
